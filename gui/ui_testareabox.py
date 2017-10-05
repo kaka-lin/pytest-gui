@@ -15,9 +15,9 @@ class Ui_TestAreaBox(object):
         self.fileName_lineEdit.setReadOnly(True)
         self.fileName_lineEdit.setObjectName("fileName_lineEdit")
         # listView
-        self.list = QtWidgets.QListView()
-        self.model = QtGui.QStandardItemModel(self.list)
-        self.list.setModel(self.model)
+        self.list = QtWidgets.QTextBrowser(testAreaBox)
+        #self.model = QtGui.QStandardItemModel(self.list)
+        #self.list.setModel(self.model)
         
         self.gridLayout.addWidget(self.fileName_lineEdit, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.run_test1_button, 0, 1, 1, 1)

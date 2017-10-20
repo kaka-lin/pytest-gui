@@ -8,7 +8,11 @@ class Ui_TestAreaBox(object):
         self.gridLayout = QtWidgets.QGridLayout(testAreaBox)
         self.gridLayout.setHorizontalSpacing(12)
         self.gridLayout.setVerticalSpacing(12)
-    
+
+        self.lcdnumber = QtWidgets.QLCDNumber(testAreaBox)
+        self.lcdnumber.setObjectName("lcdnumber")
+        self.lcdnumber.setDigitCount(8)
+        self.lcdnumber.setMode(QtWidgets.QLCDNumber.Dec)
         self.run_test1_button = QtWidgets.QPushButton(testAreaBox)
         self.run_test1_button.setObjectName("run_test1_button")
         self.fileName_lineEdit = QtWidgets.QLineEdit(testAreaBox)
@@ -19,9 +23,10 @@ class Ui_TestAreaBox(object):
         #self.model = QtGui.QStandardItemModel(self.list)
         #self.list.setModel(self.model)
         
-        self.gridLayout.addWidget(self.fileName_lineEdit, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.run_test1_button, 0, 1, 1, 1)
-        self.gridLayout.addWidget(self.list, 1, 0, 1, 2)
+        self.gridLayout.addWidget(self.lcdnumber, 0, 0, 1, 2)
+        self.gridLayout.addWidget(self.fileName_lineEdit, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.run_test1_button, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.list, 2, 0, 1, 2)
         
         self.retranslateUi(testAreaBox)
         

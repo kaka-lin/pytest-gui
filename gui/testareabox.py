@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QTime, QTimer
 from gui.ui_testareabox import Ui_TestAreaBox
 import pytest
 import subprocess
@@ -14,6 +14,9 @@ class TestAreaBox(QtWidgets.QGroupBox):
         super(TestAreaBox, self).__init__(parent)
 
         self.trigger.connect(self.show_data)
+        self.__timer = QTimer()
+        self.__timer.timeout.connect(self.show_time)
+        self.__timer.start(1000)
 
         self.ui = Ui_TestAreaBox()
         self.ui.setupUi(self)
@@ -21,6 +24,11 @@ class TestAreaBox(QtWidgets.QGroupBox):
 
     def _setup_ui(self):
         """ """
+    
+    def show_time(self):
+        time = QTime.currentTime().toString("hh:mm:ss")
+        self.ui.lcdnumber.display(time)
+        
     
     def on_run_test_button_clicked(self):
         self.ui.list.clear()

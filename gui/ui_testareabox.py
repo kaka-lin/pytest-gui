@@ -30,7 +30,7 @@ class Ui_TestAreaBox(object):
         
         self.retranslateUi(testAreaBox)
         
-        self.run_test1_button.clicked.connect(testAreaBox.on_run_test_button_clicked)
+        #self.run_test1_button.clicked.connect(testAreaBox.on_run_test_button_clicked)
         #self.model.itemChanged.connect(testAreaBox.onItemChanged)
 
     def retranslateUi(self, testAreaBox):

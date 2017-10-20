@@ -5,10 +5,11 @@ from gui.ui_testareabox import Ui_TestAreaBox
 import pytest
 import subprocess
 from subprocess import Popen, PIPE
+import time
 
 class WorkThread(QtCore.QThread):
     # Create the signal
-    sig = QtCore.pyqtSignal()
+    sig = QtCore.pyqtSignal(int)
 
     def __init__(self, parent=None):
         super(WorkThread, self).__init__(parent)
@@ -17,8 +18,8 @@ class WorkThread(QtCore.QThread):
         
     def run(self):
         for i in range(300000000):
-            continue
-        self.sig.emit()
+            time.sleep(0.1)
+            self.sig.emit(i)
 
 class TestAreaBox(QtWidgets.QGroupBox):
 
@@ -51,8 +52,12 @@ class TestAreaBox(QtWidgets.QGroupBox):
     def start(self):
         self.work_thread.start()
 
-    def show_info(self):
-        self.ui.fileName_lineEdit.setText('計算完畢')
+    def show_info(self, i):
+        #self.ui.fileName_lineEdit.setText('計算完畢')
+        i = str(i)
+        self.ui.list.insertPlainText(i)
+        self.ui.list.insertPlainText('\n')
+        self.ui.list.show()
         
     
     def on_run_test_button_clicked(self):

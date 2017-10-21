@@ -1,6 +1,5 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
 import sys
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class KakaQTextBrowser(QtWidgets.QTextBrowser):
     def __init__(self, parent=None):

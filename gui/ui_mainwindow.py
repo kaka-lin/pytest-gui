@@ -47,7 +47,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "CSV Handle Tool"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Production Test PTool"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Test1"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Test2"))
         self.menuAbout.setTitle(_translate("MainWindow", "&Help"))

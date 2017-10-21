@@ -1,12 +1,9 @@
+import sys
+import time
+import pytest
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QTime, QTimer
 from gui.ui_testareabox import Ui_TestAreaBox
-import pytest
-import subprocess
-from subprocess import Popen, PIPE
-import time
-import sys
 
 class WorkThread(QtCore.QThread):
     # Create the signal

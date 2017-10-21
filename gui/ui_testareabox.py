@@ -1,5 +1,23 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
+import sys
+
+class KakaQTextBrowser(QtWidgets.QTextBrowser):
+    def __init__(self, parent=None):
+        super(KakaQTextBrowser, self).__init__(parent)
+    
+    def write(self, text):
+        self.insertPlainText(text)
+
+    def flush(self):
+        sys.stdout.flush
+    
+    def buffer(self):
+        sys.stdout.buffer
+    
+    def isatty(self):
+        sys.stdout.isatty
+
 
 class Ui_TestAreaBox(object):
     def setupUi(self, testAreaBox):
@@ -19,9 +37,7 @@ class Ui_TestAreaBox(object):
         self.fileName_lineEdit.setReadOnly(True)
         self.fileName_lineEdit.setObjectName("fileName_lineEdit")
         # listView
-        self.list = QtWidgets.QTextBrowser(testAreaBox)
-        #self.model = QtGui.QStandardItemModel(self.list)
-        #self.list.setModel(self.model)
+        self.list = KakaQTextBrowser(testAreaBox)
         
         self.gridLayout.addWidget(self.lcdnumber, 0, 0, 1, 2)
         self.gridLayout.addWidget(self.fileName_lineEdit, 1, 0, 1, 1)
@@ -29,9 +45,6 @@ class Ui_TestAreaBox(object):
         self.gridLayout.addWidget(self.list, 2, 0, 1, 2)
         
         self.retranslateUi(testAreaBox)
-        
-        #self.run_test1_button.clicked.connect(testAreaBox.on_run_test_button_clicked)
-        #self.model.itemChanged.connect(testAreaBox.onItemChanged)
 
     def retranslateUi(self, testAreaBox):
         _translate = QtCore.QCoreApplication.translate

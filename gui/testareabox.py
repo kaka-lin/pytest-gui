@@ -6,40 +6,34 @@ import pytest
 import subprocess
 from subprocess import Popen, PIPE
 import time
+import sys
 
 class WorkThread(QtCore.QThread):
     # Create the signal
-    sig = QtCore.pyqtSignal(int)
+    sig = pyqtSignal(['QString'])
 
     def __init__(self, parent=None):
         super(WorkThread, self).__init__(parent)
+        """ """
 
-        # Connect signal to the desired function
-        
     def run(self):
-        for i in range(300000000):
-            time.sleep(0.1)
-            self.sig.emit(i)
+        pytest.main(['-p', 'no:terminal'])
+        
 
 class TestAreaBox(QtWidgets.QGroupBox):
-
-    trigger = pyqtSignal(['QString'])
-
     def __init__(self, parent=None):
         super(TestAreaBox, self).__init__(parent)
 
-        self.trigger.connect(self.show_data)
         self.__timer = QTimer()
         self.__timer.timeout.connect(self.show_time)
         self.__timer.start(1000)
         self.work_thread = WorkThread()
-        self.work_thread.sig.connect(self.show_info)
-
 
         self.ui = Ui_TestAreaBox()
         self.ui.setupUi(self)
         self._setup_ui()
 
+        self.work_thread.sig.connect(self.show_info)
         self.ui.run_test1_button.clicked.connect(self.start)
 
     def _setup_ui(self):
@@ -50,36 +44,14 @@ class TestAreaBox(QtWidgets.QGroupBox):
         self.ui.lcdnumber.display(time)
     
     def start(self):
+        origin_stdout = sys.stdout
+        sys.stdout = self.ui.list
         self.work_thread.start()
+        #sys.stdout = origin_stdout
+        #print('end')
 
-    def show_info(self, i):
-        #self.ui.fileName_lineEdit.setText('計算完畢')
-        i = str(i)
-        self.ui.list.insertPlainText(i)
+    def show_info(self, line):
+        self.ui.list.insertPlainText(line)
         self.ui.list.insertPlainText('\n')
         self.ui.list.show()
         
-    
-    def on_run_test_button_clicked(self):
-        self.ui.list.clear()
-        p = subprocess.Popen(['pytest', '-p', 'no:terminal'], stdout=PIPE, stderr=PIPE)
-        #pytest.main(['-p', 'no:terminal'])
-        
-        i = 0
-        while True:
-            i += 1
-            line = p.stdout.readline().decode('UTF8')
-            
-            if line == '' and p.poll() != None:
-                break
-            elif line != '':
-                self.trigger.emit(line)
-            else:
-                break
-                      
-        p.kill()
-    
-    @pyqtSlot(str)
-    def show_data(self, line):
-        self.ui.list.insertPlainText(line)
-        self.ui.list.show()

@@ -1,34 +1,65 @@
 import sys
 import time
+import queue
 import pytest
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, pyqtSlot, QTime, QTimer
 from gui.ui_testareabox import Ui_TestAreaBox
 
+class WriteStream(QObject):
+    trigger = pyqtSignal()
+    def __init__(self, queue, parent=None):
+        super(WriteStream, self).__init__(parent)
+        
+        self.queue = queue
+
+    def write(self, text):
+        self.queue.put(text)
+        self.trigger.emit()
+
+    def flush(self):
+        sys.stdout.flush
+    
+    def buffer(self):
+        sys.stdout.buffer
+    
+    def isatty(self):
+        sys.stdout.isatty
+        
+
 class Worker(QObject):
     """ Pytest Thread """
 
-    #sig = pyqtSignal(['QString'])
-    sig = pyqtSignal(int)
     sig_done = pyqtSignal()
+    sig_msg = pyqtSignal(['QString'])
 
-    def __init__(self, path=None):
-        super().__init__()
+    def __init__(self, path=None, parent=None):
+        super(Worker, self).__init__(parent)
 
         self.path = path
-
+        self.queue = queue.Queue()
+        self.writeStream = WriteStream(self.queue)
+        
     @pyqtSlot()
     def work(self):
+        origin_stdout = sys.stdout
+        self.writeStream.trigger.connect(self.on_item_change)
+        sys.stdout = self.writeStream
         pytest.main(['-p', 'no:terminal'])
-
-        """
-        for i in range(100):
-            time.sleep(0.1)
-            self.sig.emit(i)
-        """
 
         self.sig_done.emit()
     
+    def on_item_change(self):
+        while True:
+            if self.queue.empty():
+                break
+
+            line = self.queue.get()
+            
+            if line == '\n':
+                pass
+            else:
+                self.sig_msg.emit(line)
             
 class TestAreaBox(QtWidgets.QGroupBox): 
     def __init__(self, parent=None):
@@ -37,7 +68,6 @@ class TestAreaBox(QtWidgets.QGroupBox):
         self.__timer = QTimer()
         self.__timer.timeout.connect(self.show_time)
         self.__timer.start(1000)
-
         self.__threads = None
 
         self.ui = Ui_TestAreaBox()
@@ -60,34 +90,22 @@ class TestAreaBox(QtWidgets.QGroupBox):
         self.__threads.append((thread, worker))  # need to store worker too otherwise will be gc'd
         worker.moveToThread(thread)
 
-        worker.sig.connect(self.show_info)
         worker.sig_done.connect(self.on_worker_done)
-
-        # control worker:
-        #self.sig_abort_workers.connect(worker.abort)
+        worker.sig_msg.connect(self.show_info)
 
         thread.started.connect(worker.work)
         thread.start()
     
     def on_stop_test_button_clicked(self):
-        '''
-        self.sig_abort_workers.emit()
-
-        for thread, worker in self.__threads:
-            thread.quit()
-            thread.wait()
-        
-        print('Stop!!!')
-        '''
+        """ """
 
     def on_worker_done(self):
         for thread, Worker in self.__threads:
             thread.quit()
             thread.wait()
-        
-    
-    def show_info(self, i):
-        self.ui.list.insertPlainText(str(i))
+
+    def show_info(self, line):
+        self.ui.list.insertPlainText(line)
         self.ui.list.insertPlainText('\n')
         self.ui.list.show()
     

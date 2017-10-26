@@ -30,8 +30,10 @@ class Ui_TestAreaBox(object):
         self.lcdnumber.setObjectName("lcdnumber")
         self.lcdnumber.setDigitCount(8)
         self.lcdnumber.setMode(QtWidgets.QLCDNumber.Dec)
-        self.run_test1_button = QtWidgets.QPushButton(testAreaBox)
-        self.run_test1_button.setObjectName("run_test1_button")
+        self.run_test_button = QtWidgets.QPushButton(testAreaBox)
+        self.run_test_button.setObjectName("run_test_button")
+        self.stop_test_button = QtWidgets.QPushButton(testAreaBox)
+        self.stop_test_button.setObjectName("stop_test_button")
         self.fileName_lineEdit = QtWidgets.QLineEdit(testAreaBox)
         self.fileName_lineEdit.setReadOnly(True)
         self.fileName_lineEdit.setObjectName("fileName_lineEdit")
@@ -40,12 +42,18 @@ class Ui_TestAreaBox(object):
         
         self.gridLayout.addWidget(self.lcdnumber, 0, 0, 1, 2)
         self.gridLayout.addWidget(self.fileName_lineEdit, 1, 0, 1, 1)
-        self.gridLayout.addWidget(self.run_test1_button, 1, 1, 1, 1)
-        self.gridLayout.addWidget(self.list, 2, 0, 1, 2)
+        self.gridLayout.addWidget(self.run_test_button, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.stop_test_button, 2, 1, 1, 1)
+        self.gridLayout.addWidget(self.list, 3, 0, 1, 2)
         
+        self.run_test_button.clicked.connect(testAreaBox.on_run_test_button_clicked)
+        self.stop_test_button.clicked.connect(testAreaBox.on_stop_test_button_clicked)
+
+
         self.retranslateUi(testAreaBox)
 
     def retranslateUi(self, testAreaBox):
         _translate = QtCore.QCoreApplication.translate
         testAreaBox.setTitle(_translate("TestAreaBox", "Test Area"))
-        self.run_test1_button.setText(_translate("PlotBox", "Run Test"))
+        self.run_test_button.setText(_translate("PlotBox", "Run Test"))
+        self.stop_test_button.setText(_translate("PlotBox", "Stop Test"))

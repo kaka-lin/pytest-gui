@@ -14,5 +14,6 @@ venv/
 .DS_Store
 ._.DS_Store
 
+# pyinstaller
 build/
 dist/

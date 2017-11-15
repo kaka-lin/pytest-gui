@@ -1,12 +1,17 @@
 # -*- mode: python -*-
 
+import os
+pwd = os.getcwd()
+test_files = pwd + '/testcases'
+
 block_cipher = None
 
+added_files = [(test_files, 'testcases')]
 
 a = Analysis(['pdtptool.py'],
              pathex=['/Users/kakalin/Project/production-test-ptool/venv/lib/python3.6/site-packages', '/Users/kakalin/Project/production-test-ptool'],
              binaries=[],
-             datas=[],
+             datas=added_files,
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],

@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 import queue
@@ -39,7 +40,8 @@ class Worker(QObject):
     def __init__(self, path=None, parent=None):
         super(Worker, self).__init__(parent)
 
-        self.path = path
+        pwd = os.getcwd()
+        self.path = pwd + '/' + path # 解決打包後路徑問題
 
         self.queue = queue.Queue()
         self.writeStream = WriteStream(self.queue)
@@ -49,21 +51,12 @@ class Worker(QObject):
         
     @pyqtSlot()
     def work(self):
+        print(self.path)
         global origin_stdout
         origin_stdout = sys.stdout
         self.writeStream.trigger.connect(self.on_item_change)
         sys.stdout = self.writeStream
         pytest.main(['-p', 'no:terminal', self.path])
-
-        '''
-        for step in range(100):
-            time.sleep(0.1)
-            print(step)
-                
-            QApplication.processEvents()
-            if self.__abort:
-                break
-        '''
         
         self.sig_done.emit()
     
@@ -129,14 +122,7 @@ class TestAreaBox(QtWidgets.QGroupBox):
         thread.start()
     
     def on_stop_test_button_clicked(self):
-        '''
-        self.sig_abort_workers.emit()
-        for thread, Worker in self.__threads:
-            thread.quit()
-            thread.wait()
-        sys.stdout = origin_stdout
-        print('Pytest Thread Abort!')
-        '''
+        """ """
 
     def on_worker_done(self):
         sys.stdout = origin_stdout

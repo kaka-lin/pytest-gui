@@ -53,7 +53,7 @@ class Worker(QObject):
         origin_stdout = sys.stdout
         self.writeStream.trigger.connect(self.on_item_change)
         sys.stdout = self.writeStream
-        pytest.main(['-p', 'no:terminal'])
+        pytest.main(['-p', 'no:terminal', self.path])
 
         '''
         for step in range(100):
@@ -89,6 +89,7 @@ class TestAreaBox(QtWidgets.QGroupBox):
     def __init__(self, parent=None):
         super(TestAreaBox, self).__init__(parent)
 
+        self.path = ''
         self.__timer = QTimer()
         self.__timer.timeout.connect(self.show_time)
         self.__timer.start(1000)
@@ -101,6 +102,9 @@ class TestAreaBox(QtWidgets.QGroupBox):
     def _setup_ui(self):
         """ """
     
+    def set_test_path(self, path):
+        self.path = path
+    
     def show_time(self):
         time = QTime.currentTime().toString("hh:mm:ss")
         self.ui.lcdnumber.display(time)
@@ -110,7 +114,7 @@ class TestAreaBox(QtWidgets.QGroupBox):
         self.ui.list.clear()
 
         self.__threads = []
-        worker = Worker()
+        worker = Worker(self.path)
         thread = QThread(self)
         self.__threads.append((thread, worker))  # need to store worker too otherwise will be gc'd
         worker.moveToThread(thread)

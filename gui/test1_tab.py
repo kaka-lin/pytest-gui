@@ -6,6 +6,7 @@ class Test1Tab(QtWidgets.QVBoxLayout):
         super(Test1Tab, self).__init__(parent)
         
         self.test_area_box = TestAreaBox()
+        self.test_area_box.set_test_path('testcases/test1')
         self.addWidget(self.test_area_box)
 
         self._setup_ui()

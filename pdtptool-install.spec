@@ -4,12 +4,15 @@ import os
 pwd = os.getcwd()
 test_files = pwd + '/testcases'
 
+# 請將這行改成你 python packages 位置
+pythonEnv_path = pwd + 'venv/lib/python3.6/site-packages'
+
 block_cipher = None
 
 added_files = [(test_files, 'testcases')]
 
 a = Analysis(['pdtptool.py'],
-             pathex=['/Users/kakalin/Project/production-test-ptool/venv/lib/python3.6/site-packages', '/Users/kakalin/Project/production-test-ptool'],
+             pathex=[pythonEnv_path, pwd],
              binaries=[],
              datas=added_files,
              hiddenimports=[],

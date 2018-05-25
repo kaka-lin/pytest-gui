@@ -1,7 +1,7 @@
-# Production Test ptool
+# Pytest-GUI
 
-此為將```pytest```之結果導向至用PyQt所寫成之程式上並show出來之程式。此目的為開發產測程式，方便操作員可以直接在介面上即時看到測試結果。
+可以直接在```GUI```上即時看到```pytest```之測試結果，方便操作。
 
 ## 範例
 
-<img src="images/image.gif">
+![img](/images/image.gif)

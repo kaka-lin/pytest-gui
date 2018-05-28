@@ -7,6 +7,7 @@ from src.testor_thread import TestorThread
 
 class ManageThreads(QObject):
     runtimeSig = pyqtSignal(str, str, arguments=['item', 'result'])
+    finalResultSig = pyqtSignal(str, arguments=['final_result'])
 
     def __init__(self, parent=None):
         super(ManageThreads, self).__init__(parent)
@@ -28,6 +29,7 @@ class ManageThreads(QObject):
         worker.moveToThread(thread)
 
         worker.runtimeSig.connect(self.runtimeSig)
+        worker.finalResultSig.connect(self.finalResultSig)
         worker.testDone.connect(self.testDone)
 
         thread.started.connect(worker.run)

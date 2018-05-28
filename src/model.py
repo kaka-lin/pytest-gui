@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt, QAbstractListModel, QModelIndex, QVariant, pyqtSlot
+from PyQt5.QtCore import Qt, QAbstractListModel, QModelIndex, QVariant, pyqtSlot, pyqtSignal
 
 class ModelData(object):
     def __init__(self, item, data):
@@ -17,6 +17,8 @@ class Model(QAbstractListModel):
     DataRole = Qt.UserRole + 2
 
     _roles = { ItemRole: b'item', DataRole: b'data' }
+
+    addDataSig = pyqtSignal()
 
     def __init__(self, parent=None):
         super(Model, self).__init__(parent)
@@ -52,3 +54,4 @@ class Model(QAbstractListModel):
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
         self._datas.append(model_data)
         self.endInsertRows()
+    

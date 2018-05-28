@@ -5,6 +5,7 @@ Rectangle {
     id: root
     anchors.fill: parent
 
+    property color resultColor
     property variant internalModel
     signal rowChanged
 
@@ -47,7 +48,7 @@ Rectangle {
                     id: dataText
                     text: model.data
                     font.pixelSize: 20
-                    color: "red"
+                    color: model.data == 'passed' ? "Green" : "Red"
                 }
             }
         }

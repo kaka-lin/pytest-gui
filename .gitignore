@@ -7,7 +7,7 @@ venv/
 *.pyo
 *~
 
-.vscode/
+.vscode
 
 *.csv
 

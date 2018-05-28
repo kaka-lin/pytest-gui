@@ -1,0 +1,8 @@
+module components
+
+CircleProgress 1.0 ./common/CircleProgress.qml
+Clock 1.0 ./common/Clock.qml
+KakaProgress 1.0 ./common/KakaProgress.qml
+KakaListView 1.0 ./common/KakaListView.qml
+
+TestBox 1.0 ./TestBox.qml

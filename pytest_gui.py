@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import sys
+from PyQt5.QtGui import QGuiApplication
+from src import main
 
-from gui import app
-app.run()
+app = QGuiApplication(sys.argv)
+main.run(app)

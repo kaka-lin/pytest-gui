@@ -17,3 +17,8 @@ venv/
 # pyinstaller
 build/
 dist/
+
+*.qmlc
+
+# pytest
+.pytest_cache

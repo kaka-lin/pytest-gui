@@ -22,14 +22,14 @@ class kakaPlugin(QObject):
     def pytest_sessionstart(self, session):
         print("********************* start *********************")
 
-    @pytest.hookimpl(hookwrapper=True)
+    #@pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_protocol(self, item, nextitem):
         reports = runtestprotocol(item, nextitem=nextitem)
         for report in reports:
             if report.when == 'call':
                 self.results[item.name] = report.outcome
                 print('%s --- %s' % (item.name, report.outcome))
-                yield self.runtimeSig.emit(item.name, report.outcome)
+                self.runtimeSig.emit(item.name, report.outcome)
 
         return True
 
